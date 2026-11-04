@@ -6,3 +6,7 @@ python3 select_notes.py --concept laboratory_and_nutrition --notes_dir notes/ --
 cat laboratory_and_nutrition_scores.csv
 echo
 cat laboratory_and_nutrition_top_n_file_ids.csv
+echo
+cat laboratory_and_nutrition_scores_with_evidence.csv
+echo
+cat laboratory_and_nutrition_top_n_with_evidence.csv
