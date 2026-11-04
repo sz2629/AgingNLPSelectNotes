@@ -44,6 +44,36 @@ CONCEPTS = {
             ],
         },
     },
+    "sensory": {
+        "vision_impairment": {
+            "keywords": ["vision impairment", "visual impairment", "low vision", "blurry vision", "blurred vision",
+                         "legally blind", "macular degeneration"],
+            "regex": [
+                r"\b(decreased|reduced|poor|impaired|declining|worsening)\s+(vision|visual acuity|eyesight)\b",
+                r"\b(difficult\w*|trouble|unable to|can(no|')t)\s+(\w+\s+){0,2}(see(ing)?|read(ing)?)\b",
+                r"\b20/([4-9]\d|[1-9]\d{2,})\b",
+            ],
+        },
+        "hearing_impairment": {
+            "keywords": ["hearing loss", "hard of hearing", "hearing impairment", "presbycusis"],
+            "regex": [
+                r"\b(decreased|reduced|poor|impaired|diminished)\s+hearing\b",
+                r"\b(difficult\w*|trouble)\s+(\w+\s+){0,2}hear(ing)?\b",
+                r"\bhearing\s+aids?\b",
+                r"\bHOH\b",
+            ],
+        },
+        "numbness_neuropathy": {
+            "keywords": ["numbness", "tingling", "pins and needles"],
+            "regex": [
+                r"\b((peripheral|diabetic|sensory)\s+)?(poly)?neuropath(y|ic)\b",
+                r"\b(numb|burning)\s+(\w+\s+){0,2}(hands?|feet|foot|toes|fingers)\b",
+                r"\b(decreased|diminished|reduced|absent|impaired|loss of)\s+(light touch|sensation|"
+                r"vibrat\w*( sense)?|proprioception|monofilament( sensation)?|pinprick)\b",
+                r"\binsensate\b",
+            ],
+        },
+    },
 }
 
 
