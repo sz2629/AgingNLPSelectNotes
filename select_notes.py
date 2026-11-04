@@ -24,6 +24,25 @@ CONCEPTS = {
             "regex": [r"\b(walk|walks|walking|ambulat\w+)\s+(without|against)\s+(\w+\s+){0,2}(assist\w*|walker|cane|restrictions?|orders?)\b"],
         },
     },
+    "musculoskeletal": {
+        "frailty": {
+            "keywords": ["frail", "frailty", "exhaustion", "low activity level"],
+            "regex": [
+                r"\b(clinical frailty scale|CFS)\s*(score\s*)?(of\s*|[:=]\s*)?[4-9]\b",
+                r"\b(slow(ed)?|decreased|reduced)\s+(gait speed|walking speed|walk speed)\b",
+                r"\b(low|decreased|reduced|minimal)\s+(physical\s+)?activity\b",
+            ],
+        },
+        "weakness": {
+            "keywords": ["generalized weakness", "muscle weakness", "leg weakness", "legs feel heavy"],
+            "regex": [
+                r"\b(generali[sz]ed|proximal|distal|muscle|leg|lower extremity|bilateral)\s+weakness\b",
+                r"\b(legs?|arms?)\s+(feel(s|ing)?|felt)\s+(heavy|weak)\b",
+                r"\b(difficult\w*|hard|trouble)\s+(\w+\s+){0,2}lift(ing)?\s+(\w+\s+)?(legs?|feet|foot)\b",
+                r"\b[0-4][+-]?/5\s+(strength|power)\b",
+            ],
+        },
+    },
 }
 
 
