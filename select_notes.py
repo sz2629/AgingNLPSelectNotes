@@ -126,6 +126,45 @@ CONCEPTS = {
             ],
         },
     },
+    "laboratory_and_nutrition": {
+        "malnutrition": {
+            "keywords": ["malnutrition", "malnourished", "undernutrition", "undernourished", "cachexia",
+                         "unintentional weight loss", "unintended weight loss", "poor appetite"],
+            "regex": [
+                r"\b(poor|decreased|reduced|low|minimal|inadequate)\s+(oral\s+|PO\s+|food\s+|caloric\s+|nutritional\s+)?intake\b",
+                r"\b(lost|losing|loss of)\s+\d+(\.\d+)?\s*(lbs?|pounds|kg)\b",
+                r"\b(decreased|reduced|loss of)\s+appetite\b",
+                r"\b(muscle|temporal|fat)\s+wasting\b",
+                r"\balbumin\s*(of\s*|[:=]\s*)?([0-2](\.\d+)?|3(\.[0-4]\d*)?)(?!\.?\d)",
+                r"\bBMI\s*(of\s*|[:=]\s*)?(1[0-7](\.\d+)?|18(\.[0-4]\d*)?)(?!\.?\d)",
+            ],
+        },
+    },
+    "medication": {
+        "medication_reconciliation_concern": {
+            "keywords": ["medication discrepancy", "therapeutic duplication", "duplicate therapy"],
+            "regex": [
+                r"\b(medication|med|drug|dose|dosing)\s+(discrepanc(y|ies)|errors?|mismatch(es)?)\b",
+                r"\bdiscrepanc(y|ies)\s+(\w+\s+){0,3}(medications?|meds?|list|doses?|dosing|pharmacy)\b",
+                r"\b(duplicate|duplicated)\s+(\w+\s+){0,2}(medications?|meds?|prescriptions?|bottles?|orders?)\b",
+                r"\b(not|no longer)\s+(on|in)\s+(\w+\s+){0,2}(medication|med)\s+list\b",
+                r"\b(missing|omitted)\s+from\s+(\w+\s+){0,2}(medication|med)\s+list\b",
+                r"\bnever\s+(filled|picked up|started)\b",
+                r"\bconflicting\s+(\w+\s+){0,2}(medications?|meds?|lists?|instructions|doses|prescriptions?)\b",
+                r"\b(does not|doesn't|did not)\s+match\s+(\w+\s+){0,3}(medications?|meds?|pharmacy|list|bottles?)\b",
+            ],
+        },
+        "deprescribing_discussion": {
+            "keywords": ["deprescribe", "deprescribing", "pill burden", "polypharmacy", "Beers criteria"],
+            "regex": [
+                r"\b(discontinued|tapered off|weaned off)\b",
+                r"\b(was|were|has been|have been|is being)\s+stopped\b",
+                r"\b(stop|stopping|discontinue|discontinuing|taper|tapering|wean|weaning|cut back on)\s+(\w+\s+){0,3}(medications?|meds?|pills?)\b",
+                r"\b(reduce|reduced|reducing|decrease|decreased|decreasing|lower|lowered|lowering)\s+(the\s+|his\s+|her\s+)?(\w+\s+)?(dose|dosage)\b",
+                r"\bdose\s+(was\s+)?(reduced|decreased|lowered|halved)\b",
+            ],
+        },
+    },
 }
 
 
