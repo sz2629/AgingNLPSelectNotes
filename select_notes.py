@@ -5,6 +5,7 @@ score = keyword matches + regex matches (case-insensitive, every occurrence coun
 import argparse
 import csv
 import re
+from collections import Counter
 from pathlib import Path
 
 # Rules per concept -> sub-feature -> keywords and regexes.
@@ -47,13 +48,14 @@ CONCEPTS = {
 
 
 def score_note(text, rules):
-    score = 0
+    """Return (score, hits): hits counts each matched phrase (lowercased)."""
+    hits = Counter()
     for sub in rules.values():
-        for kw in sub["keywords"]:
-            score += len(re.findall(r"\b" + re.escape(kw) + r"\b", text, re.IGNORECASE))
-        for rx in sub["regex"]:
-            score += sum(1 for _ in re.finditer(rx, text, re.IGNORECASE))
-    return score
+        patterns = [r"\b" + re.escape(kw) + r"\b" for kw in sub["keywords"]] + sub["regex"]
+        for rx in patterns:
+            for m in re.finditer(rx, text, re.IGNORECASE):
+                hits[" ".join(m.group(0).lower().split())] += 1
+    return sum(hits.values()), hits
 
 
 def main():
@@ -66,7 +68,17 @@ def main():
     rules = CONCEPTS[args.concept]
     files = sorted(Path(args.notes_dir).glob("*.txt"),
                    key=lambda f: (not f.stem.isdigit(), int(f.stem) if f.stem.isdigit() else 0, f.stem))
-    scores = [(f.stem, score_note(f.read_text(encoding="utf-8", errors="ignore"), rules)) for f in files]
+    width = max((len(f.stem) for f in files), default=0)
+    print(f"{args.concept} | {len(files)} notes", flush=True)
+
+    scores = []
+    for f in files:
+        score, hits = score_note(f.read_text(encoding="utf-8", errors="ignore"), rules)
+        scores.append((f.stem, score))
+        if score:
+            print(f"\nNote {f.stem:<{width}} | score {score}", flush=True)
+            for phrase, n in hits.most_common():
+                print(f"  +{n}  {phrase}", flush=True)
 
     with open(f"{args.concept}_scores.csv", "w", newline="") as fh:
         w = csv.writer(fh)
@@ -79,6 +91,12 @@ def main():
         w = csv.writer(fh)
         w.writerow(["note_id"])
         w.writerows([[nid] for nid, _ in top])
+
+    print(f"\nTOP {args.top_n}")
+    for rank, (nid, score) in enumerate(top, 1):
+        print(f"  {rank}. Note {nid:<{width}} | score {score}")
+    matched = sum(1 for _, score in scores if score)
+    print(f"\n{matched} of {len(scores)} notes matched")
 
 
 if __name__ == "__main__":
