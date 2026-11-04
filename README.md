@@ -2,7 +2,7 @@
 
 Scores every note in a directory for one concept and returns the notes most likely to contain it. Scoring uses rules for each concept: keywords and regular expressions.
 
-> **Status:** `select_notes.py` supports `gait_and_balance`, `musculoskeletal`, `sensory`, `cardiovascular` and `mental_health`. Run the examples with `./run_gait_example.sh`, `./run_musculoskeletal_example.sh`, `./run_sensory_example.sh`, `./run_cardiovascular_example.sh` and `./run_mental_health_example.sh` (they use the fake notes in `notes/`).
+> **Status:** `select_notes.py` supports `gait_and_balance`, `musculoskeletal`, `sensory`, `cardiovascular`, `mental_health`, `laboratory_and_nutrition` and `medication`. Run the examples with `./run_gait_example.sh`, `./run_musculoskeletal_example.sh`, `./run_sensory_example.sh`, `./run_cardiovascular_example.sh`, `./run_mental_health_example.sh`, `./run_laboratory_and_nutrition_example.sh` and `./run_medication_example.sh` (they use the fake notes in `notes/`).
 
 ## Usage
 
@@ -30,7 +30,7 @@ notes/
 ├── 4.txt
 ├── 5.txt
 ├── ...
-└── 16.txt
+└── 20.txt
 ```
 
 ## Output
@@ -107,8 +107,7 @@ Complete `gait_and_balance` first, then add the others in this order:
 4. `cardiovascular`
 5. `mental_health`
 6. `laboratory_and_nutrition`
-7. `medication_reconciliation_concern`
-8. `deprescribing_discussion`
+7. `medication` (`medication_reconciliation_concern` and `deprescribing_discussion`)
 
 Definitions come from `Appendix_NLP_Feature_Definitions_20261028.docx`.
 
@@ -320,6 +319,69 @@ Documentation of sleep apnea or repeated pauses in breathing during sleep.
 ```
 
 The last pattern catches an apnea-hypopnea index of 5 or more, the usual threshold for sleep apnea.
+
+## Example rules: laboratory_and_nutrition
+
+These are drafts to review.
+
+### malnutrition
+
+Documentation of malnutrition or inadequate nutritional intake, including unintended weight loss, low intake, or clinical signs of undernutrition.
+
+- **Keywords:** malnutrition, malnourished, undernutrition, undernourished, cachexia, unintentional weight loss, unintended weight loss, poor appetite
+- **Regex:**
+
+```regex
+\b(poor|decreased|reduced|low|minimal|inadequate)\s+(oral\s+|PO\s+|food\s+|caloric\s+|nutritional\s+)?intake\b
+\b(lost|losing|loss of)\s+\d+(\.\d+)?\s*(lbs?|pounds|kg)\b
+\b(decreased|reduced|loss of)\s+appetite\b
+\b(muscle|temporal|fat)\s+wasting\b
+\balbumin\s*(of\s*|[:=]\s*)?([0-2](\.\d+)?|3(\.[0-4]\d*)?)(?!\.?\d)
+\bBMI\s*(of\s*|[:=]\s*)?(1[0-7](\.\d+)?|18(\.[0-4]\d*)?)(?!\.?\d)
+```
+
+The last two patterns catch albumin below 3.5 g/dL and BMI below 18.5. "Albumin 4.1" and "BMI 24.6" do not match.
+
+## Example rules: medication
+
+These are drafts to review.
+
+### medication_reconciliation_concern
+
+Documentation of a discrepancy or problem identified during medication reconciliation, such as a missing, duplicate, or conflicting medication.
+
+- **Keywords:** medication discrepancy, therapeutic duplication, duplicate therapy
+- **Regex:**
+
+```regex
+\b(medication|med|drug|dose|dosing)\s+(discrepanc(y|ies)|errors?|mismatch(es)?)\b
+\bdiscrepanc(y|ies)\s+(\w+\s+){0,3}(medications?|meds?|list|doses?|dosing|pharmacy)\b
+\b(duplicate|duplicated)\s+(\w+\s+){0,2}(medications?|meds?|prescriptions?|bottles?|orders?)\b
+\b(not|no longer)\s+(on|in)\s+(\w+\s+){0,2}(medication|med)\s+list\b
+\b(missing|omitted)\s+from\s+(\w+\s+){0,2}(medication|med)\s+list\b
+\bnever\s+(filled|picked up|started)\b
+\bconflicting\s+(\w+\s+){0,2}(medications?|meds?|lists?|instructions|doses|prescriptions?)\b
+\b(does not|doesn't|did not)\s+match\s+(\w+\s+){0,3}(medications?|meds?|pharmacy|list|bottles?)\b
+```
+
+A routine "Medications reviewed, no changes" does not match.
+
+### deprescribing_discussion
+
+Documentation of a discussion about stopping or reducing a medication to lower risk or pill burden, including any mention that a medication has been stopped or discontinued. Excludes temporary deprescription for a procedure (a medication held before and resumed after surgery, endoscopy, imaging, or another procedure).
+
+- **Keywords:** deprescribe, deprescribing, pill burden, polypharmacy, Beers criteria
+- **Regex:**
+
+```regex
+\b(discontinued|tapered off|weaned off)\b
+\b(was|were|has been|have been|is being)\s+stopped\b
+\b(stop|stopping|discontinue|discontinuing|taper|tapering|wean|weaning|cut back on)\s+(\w+\s+){0,3}(medications?|meds?|pills?)\b
+\b(reduce|reduced|reducing|decrease|decreased|decreasing|lower|lowered|lowering)\s+(the\s+|his\s+|her\s+)?(\w+\s+)?(dose|dosage)\b
+\bdose\s+(was\s+)?(reduced|decreased|lowered|halved)\b
+```
+
+The rules leave out "hold" and "held", so "aspirin held before colonoscopy and resumed" does not match. They cannot tell a procedure hold from a lasting stop, though: "discontinue aspirin 7 days before surgery" still matches. Check for this when reviewing top-ranked notes.
 
 ## Add a concept
 
