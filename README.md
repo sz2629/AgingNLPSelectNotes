@@ -36,7 +36,37 @@ notes/
 
 ## Output
 
-Each run writes two CSV files. The values below are illustrative.
+While it runs, the script prints each matching note, its score and the matched phrases, then the top-n notes:
+
+```text
+gait_and_balance | 8 notes
+
+Note 1 | score 7
+  +2  unsteady gait
+  +2  wide-based gait
+  +2  loss of balance
+  +1  walking without her walker
+
+Note 3 | score 3
+  +2  shuffling gait
+  +1  reduced balance
+
+Note 5 | score 3
+  +1  unsteadiness
+  +1  ambulating without assistance
+  +1  ambulating without assistance against orders
+
+TOP 3
+  1. Note 1 | score 7
+  2. Note 3 | score 3
+  3. Note 5 | score 3
+
+3 of 8 notes matched
+```
+
+A phrase shows `+2` when both a keyword and a regex match it. Notes with score 0 are not printed.
+
+Each run also writes two CSV files. The values below are illustrative.
 
 `gait_and_balance_scores.csv` has a score for every note:
 
