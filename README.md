@@ -2,7 +2,7 @@
 
 Scores every note in a directory for one concept and returns the notes most likely to contain it. Scoring uses rules for each concept: keywords and regular expressions.
 
-> **Status:** `select_notes.py` supports `gait_and_balance` and `musculoskeletal`. Run the examples with `./run_gait_example.sh` and `./run_musculoskeletal_example.sh` (they use the fake notes in `notes/`).
+> **Status:** `select_notes.py` supports `gait_and_balance`, `musculoskeletal` and `sensory`. Run the examples with `./run_gait_example.sh`, `./run_musculoskeletal_example.sh` and `./run_sensory_example.sh` (they use the fake notes in `notes/`).
 
 ## Usage
 
@@ -29,9 +29,8 @@ notes/
 ├── 3.txt
 ├── 4.txt
 ├── 5.txt
-├── 6.txt
-├── 7.txt
-└── 8.txt
+├── ...
+└── 11.txt
 ```
 
 ## Output
@@ -184,6 +183,55 @@ Documentation of reduced muscle strength or generalized weakness affecting funct
 ```
 
 The last pattern catches reduced strength grades such as "4/5 strength"; normal "5/5 strength" does not match.
+
+## Example rules: sensory
+
+These are drafts to review.
+
+### vision_impairment
+
+Documentation of reduced visual function affecting daily activities, whether or not corrected by lenses.
+
+- **Keywords:** vision impairment, visual impairment, low vision, blurry vision, blurred vision, legally blind, macular degeneration
+- **Regex:**
+
+```regex
+\b(decreased|reduced|poor|impaired|declining|worsening)\s+(vision|visual acuity|eyesight)\b
+\b(difficult\w*|trouble|unable to|can(no|')t)\s+(\w+\s+){0,2}(see(ing)?|read(ing)?)\b
+\b20/([4-9]\d|[1-9]\d{2,})\b
+```
+
+The last pattern catches visual acuity of 20/40 or worse; 20/20 and 20/30 do not match.
+
+### hearing_impairment
+
+Documentation of reduced hearing affecting communication or daily activities, whether or not aided by hearing devices.
+
+- **Keywords:** hearing loss, hard of hearing, hearing impairment, presbycusis
+- **Regex:**
+
+```regex
+\b(decreased|reduced|poor|impaired|diminished)\s+hearing\b
+\b(difficult\w*|trouble)\s+(\w+\s+){0,2}hear(ing)?\b
+\bhearing\s+aids?\b
+\bHOH\b
+```
+
+### numbness_neuropathy
+
+Documentation of reduced, lost, or abnormal peripheral sensation, typically in the hands or feet, either reported by the patient (numbness, tingling, pins and needles, burning) or found on exam (diminished light touch, monofilament, vibration, or proprioception), including diagnosed peripheral neuropathy of any cause. Relevant to balance, gait, and fall risk.
+
+- **Keywords:** numbness, tingling, pins and needles
+- **Regex:**
+
+```regex
+\b((peripheral|diabetic|sensory)\s+)?(poly)?neuropath(y|ic)\b
+\b(numb|burning)\s+(\w+\s+){0,2}(hands?|feet|foot|toes|fingers)\b
+\b(decreased|diminished|reduced|absent|impaired|loss of)\s+(light touch|sensation|vibrat\w*( sense)?|proprioception|monofilament( sensation)?|pinprick)\b
+\binsensate\b
+```
+
+Normal exam wording such as "sensation intact to light touch" does not match.
 
 ## Add a concept
 
