@@ -2,7 +2,7 @@
 
 Scores every note in a directory for one concept and returns the notes most likely to contain it. Scoring uses rules for each concept: keywords and regular expressions.
 
-> **Status:** Planned. `select_notes.py` has not been built yet. The command, file names and scoring below are draft proposals.
+> **Status:** `select_notes.py` supports `gait_and_balance`. Run the example with `./run_gait_example.sh` (uses the fake notes in `notes/`).
 
 ## Usage
 
