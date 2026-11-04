@@ -2,7 +2,7 @@
 
 Scores every note in a directory for one concept and returns the notes most likely to contain it. Scoring uses rules for each concept: keywords and regular expressions.
 
-> **Status:** `select_notes.py` supports `gait_and_balance`. Run the example with `./run_gait_example.sh` (uses the fake notes in `notes/`).
+> **Status:** `select_notes.py` supports `gait_and_balance` and `musculoskeletal`. Run the examples with `./run_gait_example.sh` and `./run_musculoskeletal_example.sh` (they use the fake notes in `notes/`).
 
 ## Usage
 
@@ -28,7 +28,10 @@ notes/
 ├── 2.txt
 ├── 3.txt
 ├── 4.txt
-└── 5.txt
+├── 5.txt
+├── 6.txt
+├── 7.txt
+└── 8.txt
 ```
 
 ## Output
@@ -116,6 +119,41 @@ Documentation that the patient walks in a way that poses a safety risk, such as 
 ```regex
 \b(walk|walks|walking|ambulat\w+)\s+(without|against)\s+(\w+\s+){0,2}(assist\w*|walker|cane|restrictions?|orders?)\b
 ```
+
+## Example rules: musculoskeletal
+
+These are drafts to review.
+
+### frailty
+
+A state of reduced physiological reserve and increased vulnerability to stressors, documented as frailty or reflected in features such as weakness, slowness, exhaustion, and low activity.
+
+- **Keywords:** frail, frailty, exhaustion, low activity level
+- **Regex:**
+
+```regex
+\b(clinical frailty scale|CFS)\s*(score\s*)?(of\s*|[:=]\s*)?[4-9]\b
+\b(slow(ed)?|decreased|reduced)\s+(gait speed|walking speed|walk speed)\b
+\b(low|decreased|reduced|minimal)\s+(physical\s+)?activity\b
+```
+
+Weakness is scored under its own sub-feature, so it is not repeated here.
+
+### weakness
+
+Documentation of reduced muscle strength or generalized weakness affecting function or mobility, including patient-described leg heaviness (legs feeling heavy or difficult to lift).
+
+- **Keywords:** generalized weakness, muscle weakness, leg weakness, legs feel heavy
+- **Regex:**
+
+```regex
+\b(generali[sz]ed|proximal|distal|muscle|leg|lower extremity|bilateral)\s+weakness\b
+\b(legs?|arms?)\s+(feel(s|ing)?|felt)\s+(heavy|weak)\b
+\b(difficult\w*|hard|trouble)\s+(\w+\s+){0,2}lift(ing)?\s+(\w+\s+)?(legs?|feet|foot)\b
+\b[0-4][+-]?/5\s+(strength|power)\b
+```
+
+The last pattern catches reduced strength grades such as "4/5 strength"; normal "5/5 strength" does not match.
 
 ## Add a concept
 
