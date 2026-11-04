@@ -17,6 +17,8 @@ python select_notes.py --concept gait_and_balance --notes_dir notes/ --top_n 3
 | `--concept` | Concept to score, such as `gait_and_balance` |
 | `--notes_dir` | Directory containing the notes, with each note identified by its note ID |
 | `--top_n` | Number of highest-scoring note IDs to select |
+| `--quiet` | Do not print notes and matches while running |
+| `--hide_zero` | Print only notes with at least one match |
 
 ## Input
 
@@ -36,26 +38,49 @@ notes/
 
 ## Output
 
-Each run writes two CSV files. The values below are illustrative.
+While running, the script prints each note's text with matches marked `[[like this]]`, the list of matches and the score, and then the top-n:
 
-`gait_and_balance_scores.csv` has a score for every note:
-
-```csv
-note_id,score
-1,5
-2,0
-3,3
-4,1
-5,2
+```text
+======================================================================
+Note 7 | score = 4
+----------------------------------------------------------------------
+Patient states her [[legs feel heavy]] and she has [[trouble lifting her legs]] to climb stairs. [[Proximal weakness]] on exam.
+----------------------------------------------------------------------
+  + weakness             keyword  'legs feel heavy'
+  + weakness             regex    'legs feel heavy'
+  + weakness             regex    'trouble lifting her legs'
+  + weakness             regex    'Proximal weakness'
+  by sub-feature: frailty=0, weakness=4
+======================================================================
+Top 3 for musculoskeletal: 6 (score 9), 7 (score 4), 1 (score 0)
 ```
 
-`gait_and_balance_top_n_file_ids.csv` has the top-n note IDs, highest score first:
+Each run writes three CSV files (examples from `musculoskeletal` on the fake notes).
+
+`<concept>_scores.csv` has one row per note: total score, a count per sub-feature, and all matched text:
+
+```csv
+note_id,score,frailty,weakness,matched_text
+6,9,6,3,frailty: frail | frailty: Clinical Frailty Scale 6 | ... | weakness: 4/5 strength
+7,4,0,4,weakness: legs feel heavy | weakness: legs feel heavy | weakness: trouble lifting her legs | weakness: Proximal weakness
+8,0,0,0,
+```
+
+`<concept>_evidence.csv` has one row per match, for reviewing rules. `rule` is the keyword or regex that fired, `start`/`end` are character offsets, and `context` shows 40 characters on each side:
+
+```csv
+note_id,sub_feature,rule_type,rule,matched_text,start,end,context
+7,weakness,keyword,legs feel heavy,legs feel heavy,19,34,Patient states her [[legs feel heavy]] and she has trouble lifting her le...
+7,weakness,regex,"\b(difficult\w*|hard|trouble)\s+...",trouble lifting her legs,48,72,...her legs feel heavy and she has [[trouble lifting her legs]] to climb stairs...
+```
+
+`<concept>_top_n_file_ids.csv` has the top-n note IDs, highest score first:
 
 ```csv
 note_id
+6
+7
 1
-3
-5
 ```
 
 ## Scoring
