@@ -2,7 +2,7 @@
 
 Scores every note in a directory for one concept and returns the notes most likely to contain it. Scoring uses rules for each concept: keywords and regular expressions.
 
-> **Status:** `select_notes.py` supports `gait_and_balance`, `musculoskeletal` and `sensory`. Run the examples with `./run_gait_example.sh`, `./run_musculoskeletal_example.sh` and `./run_sensory_example.sh` (they use the fake notes in `notes/`).
+> **Status:** `select_notes.py` supports `gait_and_balance`, `musculoskeletal`, `sensory`, `cardiovascular` and `mental_health`. Run the examples with `./run_gait_example.sh`, `./run_musculoskeletal_example.sh`, `./run_sensory_example.sh`, `./run_cardiovascular_example.sh` and `./run_mental_health_example.sh` (they use the fake notes in `notes/`).
 
 ## Usage
 
@@ -30,7 +30,7 @@ notes/
 ├── 4.txt
 ├── 5.txt
 ├── ...
-└── 11.txt
+└── 16.txt
 ```
 
 ## Output
@@ -232,6 +232,94 @@ Documentation of reduced, lost, or abnormal peripheral sensation, typically in t
 ```
 
 Normal exam wording such as "sensation intact to light touch" does not match.
+
+## Example rules: cardiovascular
+
+These are drafts to review.
+
+### dizziness
+
+Patient-reported sensation of lightheadedness, faintness, or spinning that may signal orthostatic change, arrhythmia, or increased fall risk. Includes symptomatic hypotension, in which low or falling blood pressure is accompanied by symptoms such as lightheadedness or near-syncope.
+
+- **Keywords:** dizziness, dizzy, lightheadedness, lightheaded, vertigo, presyncope, symptomatic hypotension
+- **Regex:**
+
+```regex
+\blight-headed(ness)?\b
+\bnear[- ]syncop(e|al)\b
+\b(feel(s|ing)?|felt)\s+(faint|woozy)\b
+\b(room|head|everything)\s+((is|was)\s+)?spinning\b
+\b(orthostatic|postural)\s+hypotension\b
+\b(blood pressure|BP)\s+(drops?|dropped|fell|falls)\b
+```
+
+"Orthostatic vitals normal" does not match; only orthostatic or postural hypotension does.
+
+## Example rules: mental_health
+
+These are drafts to review.
+
+### anxiety
+
+A mood state marked by persistent worry, nervousness, or fear that may affect function, sleep, or engagement with care.
+
+- **Keywords:** anxiety, anxious, nervousness, panic attacks
+- **Regex:**
+
+```regex
+\b(excessive|persistent|constant)\s+worry(ing)?\b
+\bworr(y|ies|ied|ying)\s+(a lot|constantly|all the time)\b
+\bGAD-?7\s*(score\s*)?(of\s*|[:=]\s*)?([5-9]|1\d|2[01])\b
+```
+
+The last pattern catches a GAD-7 score of 5 or more (mild anxiety or worse).
+
+### depression
+
+A mood disorder marked by persistent sadness, hopelessness, and loss of interest or pleasure, with cognitive, behavioral, and physical symptoms such as fatigue, poor concentration, and changes in appetite or sleep.
+
+- **Keywords:** depression, depressed, hopelessness, anhedonia
+- **Regex:**
+
+```regex
+\bMDD\b
+\b(feel(s|ing)?|felt)\s+(sad|hopeless|down|worthless)\b
+\b(loss of|lost|little|decreased)\s+interest\b
+\bPHQ-?9\s*(score\s*)?(of\s*|[:=]\s*)?([5-9]|1\d|2[0-7])\b
+\bPHQ-?2\s*(score\s*)?(of\s*|[:=]\s*)?[3-6]\b
+```
+
+The PHQ patterns catch a positive screen: PHQ-9 of 5 or more, PHQ-2 of 3 or more. "PHQ-2 score 0" does not match. Fatigue, concentration, appetite and sleep are left out because they are not specific to depression; sleep is scored under `sleep_disturbance`.
+
+### sleep_disturbance
+
+Documentation of disrupted sleep, such as insomnia, difficulty falling or staying asleep, or poor sleep quality.
+
+- **Keywords:** insomnia, sleep disturbance, trouble sleeping
+- **Regex:**
+
+```regex
+\b(difficult\w*|trouble|problems?)\s+(\w+\s+){0,2}(falling|staying)\s+asleep\b
+\b(poor|disrupted|interrupted|fragmented|restless)\s+sleep\b
+\b(wakes?|waking|woke|awakens?|awakening)\s+(up\s+)?(\w+\s+){0,2}(at night|overnight|during the night|too early)\b
+\bsleep(s|ing)?\s+(only\s+)?[1-4]\s+hours\b
+```
+
+### sleep_apnea
+
+Documentation of sleep apnea or repeated pauses in breathing during sleep.
+
+- **Keywords:** sleep apnea, CPAP, BiPAP
+- **Regex:**
+
+```regex
+\bOSA\b
+\b(stops?|stopped|pauses?|paused)\s+breathing\b
+\b(apneic|apnea)\s+(episodes|events|spells)\b
+\bAHI\s*(of\s*|[:=]\s*)?([5-9]|[1-9]\d+)\b
+```
+
+The last pattern catches an apnea-hypopnea index of 5 or more, the usual threshold for sleep apnea.
 
 ## Add a concept
 

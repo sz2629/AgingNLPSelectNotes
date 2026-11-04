@@ -74,6 +74,58 @@ CONCEPTS = {
             ],
         },
     },
+    "cardiovascular": {
+        "dizziness": {
+            "keywords": ["dizziness", "dizzy", "lightheadedness", "lightheaded", "vertigo", "presyncope",
+                         "symptomatic hypotension"],
+            "regex": [
+                r"\blight-headed(ness)?\b",
+                r"\bnear[- ]syncop(e|al)\b",
+                r"\b(feel(s|ing)?|felt)\s+(faint|woozy)\b",
+                r"\b(room|head|everything)\s+((is|was)\s+)?spinning\b",
+                r"\b(orthostatic|postural)\s+hypotension\b",
+                r"\b(blood pressure|BP)\s+(drops?|dropped|fell|falls)\b",
+            ],
+        },
+    },
+    "mental_health": {
+        "anxiety": {
+            "keywords": ["anxiety", "anxious", "nervousness", "panic attacks"],
+            "regex": [
+                r"\b(excessive|persistent|constant)\s+worry(ing)?\b",
+                r"\bworr(y|ies|ied|ying)\s+(a lot|constantly|all the time)\b",
+                r"\bGAD-?7\s*(score\s*)?(of\s*|[:=]\s*)?([5-9]|1\d|2[01])\b",
+            ],
+        },
+        "depression": {
+            "keywords": ["depression", "depressed", "hopelessness", "anhedonia"],
+            "regex": [
+                r"\bMDD\b",
+                r"\b(feel(s|ing)?|felt)\s+(sad|hopeless|down|worthless)\b",
+                r"\b(loss of|lost|little|decreased)\s+interest\b",
+                r"\bPHQ-?9\s*(score\s*)?(of\s*|[:=]\s*)?([5-9]|1\d|2[0-7])\b",
+                r"\bPHQ-?2\s*(score\s*)?(of\s*|[:=]\s*)?[3-6]\b",
+            ],
+        },
+        "sleep_disturbance": {
+            "keywords": ["insomnia", "sleep disturbance", "trouble sleeping"],
+            "regex": [
+                r"\b(difficult\w*|trouble|problems?)\s+(\w+\s+){0,2}(falling|staying)\s+asleep\b",
+                r"\b(poor|disrupted|interrupted|fragmented|restless)\s+sleep\b",
+                r"\b(wakes?|waking|woke|awakens?|awakening)\s+(up\s+)?(\w+\s+){0,2}(at night|overnight|during the night|too early)\b",
+                r"\bsleep(s|ing)?\s+(only\s+)?[1-4]\s+hours\b",
+            ],
+        },
+        "sleep_apnea": {
+            "keywords": ["sleep apnea", "CPAP", "BiPAP"],
+            "regex": [
+                r"\bOSA\b",
+                r"\b(stops?|stopped|pauses?|paused)\s+breathing\b",
+                r"\b(apneic|apnea)\s+(episodes|events|spells)\b",
+                r"\bAHI\s*(of\s*|[:=]\s*)?([5-9]|[1-9]\d+)\b",
+            ],
+        },
+    },
 }
 
 
