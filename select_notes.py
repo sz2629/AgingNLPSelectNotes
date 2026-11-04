@@ -24,6 +24,20 @@ CONCEPTS = {
             "regex": [r"\b(walk|walks|walking|ambulat\w+)\s+(without|against)\s+(\w+\s+){0,2}(assist\w*|walker|cane|restrictions?|orders?)\b"],
         },
     },
+    "musculoskeletal": {
+        "frailty": {
+            "keywords": ["frailty", "frail", "deconditioning", "sarcopenia"],
+            "regex": [r"\b(exhaust(ed|ion)|low (physical )?activity|slow(ed)? (walking|gait) speed)\b"],
+        },
+        "weakness": {
+            "keywords": ["generalized weakness", "muscle weakness", "leg weakness", "legs feel heavy"],
+            "regex": [
+                r"\b(generali[sz]ed|muscle|leg|lower extremity|proximal)\s+weakness\b",
+                r"\b(decreased|reduced|diminished)\s+(muscle\s+)?strength\b",
+                r"\blegs?\s+(feel(s|ing)?|are|is)\s+(heavy|(hard|difficult) to lift)\b",
+            ],
+        },
+    },
 }
 
 

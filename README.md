@@ -2,7 +2,7 @@
 
 Scores every note in a directory for one concept and returns the notes most likely to contain it. Scoring uses rules for each concept: keywords and regular expressions.
 
-> **Status:** `select_notes.py` supports `gait_and_balance`. Run the example with `./run_gait_example.sh` (uses the fake notes in `notes/`).
+> **Status:** `select_notes.py` supports `gait_and_balance` and `musculoskeletal`. Run the example with `./run_gait_example.sh` (uses the fake notes in `notes/`).
 
 ## Usage
 
@@ -28,7 +28,7 @@ notes/
 ├── 2.txt
 ├── 3.txt
 ├── 4.txt
-└── 5.txt
+├── 5.txt
 ```
 
 ## Output
@@ -115,6 +115,40 @@ Documentation that the patient walks in a way that poses a safety risk, such as 
 
 ```regex
 \b(walk|walks|walking|ambulat\w+)\s+(without|against)\s+(\w+\s+){0,2}(assist\w*|walker|cane|restrictions?|orders?)\b
+```
+
+## Example rules: musculoskeletal
+
+These are drafts to review.
+
+### frailty
+
+A state of reduced physiological reserve and increased vulnerability to stressors, documented as frailty or reflected in features such as weakness, slowness, exhaustion, and low activity.
+
+- **Keywords:** frailty, frail, deconditioning, sarcopenia
+- **Regex:**
+
+```regex
+\b(exhaust(ed|ion)|low (physical )?activity|slow(ed)? (walking|gait) speed)\b
+```
+
+### weakness
+
+Documentation of reduced muscle strength or generalized weakness affecting function or mobility, including patient-described leg heaviness (legs feeling heavy or difficult to lift).
+
+- **Keywords:** generalized weakness, muscle weakness, leg weakness, legs feel heavy
+- **Regex:**
+
+```regex
+\b(generali[sz]ed|muscle|leg|lower extremity|proximal)\s+weakness\b
+\b(decreased|reduced|diminished)\s+(muscle\s+)?strength\b
+\blegs?\s+(feel(s|ing)?|are|is)\s+(heavy|(hard|difficult) to lift)\b
+```
+
+Run it with:
+
+```bash
+python select_notes.py --concept musculoskeletal --notes_dir notes/ --top_n 3
 ```
 
 ## Add a concept
