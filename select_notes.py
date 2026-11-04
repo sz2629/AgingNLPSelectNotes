@@ -193,9 +193,12 @@ def main():
     print(f"{args.concept} | {len(files)} notes", flush=True)
 
     scores = []
+    evidence = {}
     for f in files:
         score, hits = score_note(f.read_text(encoding="utf-8", errors="ignore"), rules)
         scores.append((f.stem, score))
+        # Same phrases and counts as the terminal log, in one CSV cell.
+        evidence[f.stem] = "; ".join(f"+{n} {phrase}" for phrase, n in hits.most_common())
         if score:
             print(f"\nNote {f.stem:<{width}} | score {score}", flush=True)
             for phrase, n in hits.most_common():
@@ -206,12 +209,22 @@ def main():
         w.writerow(["note_id", "score"])
         w.writerows(scores)
 
+    with open(f"{args.concept}_scores_with_evidence.csv", "w", newline="") as fh:
+        w = csv.writer(fh)
+        w.writerow(["note_id", "score", "evidence"])
+        w.writerows([nid, score, evidence[nid]] for nid, score in scores)
+
     # Highest score first; ties keep note ID order (sort is stable).
     top = sorted(scores, key=lambda s: -s[1])[: args.top_n]
     with open(f"{args.concept}_top_n_file_ids.csv", "w", newline="") as fh:
         w = csv.writer(fh)
         w.writerow(["note_id"])
         w.writerows([[nid] for nid, _ in top])
+
+    with open(f"{args.concept}_top_n_with_evidence.csv", "w", newline="") as fh:
+        w = csv.writer(fh)
+        w.writerow(["rank", "note_id", "score", "evidence"])
+        w.writerows([rank, nid, score, evidence[nid]] for rank, (nid, score) in enumerate(top, 1))
 
     print(f"\nTOP {args.top_n}")
     for rank, (nid, score) in enumerate(top, 1):

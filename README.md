@@ -65,7 +65,7 @@ TOP 3
 
 A phrase shows `+2` when both a keyword and a regex match it. Notes with score 0 are not printed.
 
-Each run also writes two CSV files. The values below are illustrative.
+Each run also writes four CSV files. The values below are illustrative.
 
 `gait_and_balance_scores.csv` has a score for every note:
 
@@ -85,6 +85,26 @@ note_id
 1
 3
 5
+```
+
+Two more CSV files save the matched evidence next to each score, in the same `+count phrase` form as the terminal log, separated by `; `.
+
+`gait_and_balance_scores_with_evidence.csv` has every note (evidence is empty when the score is 0):
+
+```csv
+note_id,score,evidence
+1,7,+2 unsteady gait; +2 wide-based gait; +2 loss of balance; +1 walking without her walker
+2,0,
+3,3,+2 shuffling gait; +1 reduced balance
+```
+
+`gait_and_balance_top_n_with_evidence.csv` has the top-n notes, highest score first:
+
+```csv
+rank,note_id,score,evidence
+1,1,7,+2 unsteady gait; +2 wide-based gait; +2 loss of balance; +1 walking without her walker
+2,3,3,+2 shuffling gait; +1 reduced balance
+3,5,3,+1 unsteadiness; +1 ambulating without assistance; +1 ambulating without assistance against orders
 ```
 
 ## Scoring

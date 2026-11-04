@@ -6,3 +6,7 @@ python3 select_notes.py --concept mental_health --notes_dir notes/ --top_n 3
 cat mental_health_scores.csv
 echo
 cat mental_health_top_n_file_ids.csv
+echo
+cat mental_health_scores_with_evidence.csv
+echo
+cat mental_health_top_n_with_evidence.csv

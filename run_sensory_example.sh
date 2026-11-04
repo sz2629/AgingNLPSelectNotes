@@ -6,3 +6,7 @@ python3 select_notes.py --concept sensory --notes_dir notes/ --top_n 3
 cat sensory_scores.csv
 echo
 cat sensory_top_n_file_ids.csv
+echo
+cat sensory_scores_with_evidence.csv
+echo
+cat sensory_top_n_with_evidence.csv
