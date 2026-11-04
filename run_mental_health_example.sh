@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Run the mental health example on the fake notes in notes/.
+set -euo pipefail
+cd "$(dirname "$0")"
+python3 select_notes.py --concept mental_health --notes_dir notes/ --top_n 3
+cat mental_health_scores.csv
+echo
+cat mental_health_top_n_file_ids.csv
