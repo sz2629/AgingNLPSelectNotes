@@ -51,6 +51,11 @@ Note 3 | score 3
   +2  shuffling gait
   +1  reduced balance
 
+Note 5 | score 3
+  +1  unsteadiness
+  +1  ambulating without assistance
+  +1  ambulating without assistance against orders
+
 TOP 3
   1. Note 1 | score 7
   2. Note 3 | score 3
